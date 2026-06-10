@@ -1,0 +1,104 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-weight: 300;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: #dadada;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body main {
+  height: 80vh;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+body main header h1 {
+  font-size: 4rem;
+  font-weight: 600;
+  font-weight: 600;
+  color: transparent;
+  background: conic-gradient(from 90deg, yellow, black, yellow);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+body main .input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+body main .input input {
+  height: 30px;
+  width: 300px;
+  border-radius: 5px;
+  border: 2px solid black;
+  padding: 10px;
+}
+body main .input .addbtn {
+  padding: 8px 20px;
+  background-color: black;
+  color: whitesmoke;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+body main .input .addbtn:active {
+  scale: 0.95;
+}
+body main .input .addbtn:hover {
+  background-color: yellow;
+  color: black;
+  border: 2px solid black;
+}
+body main .tasklist {
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+body main .tasklist .taskname {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+body main .tasklist .taskname li {
+  font-size: 1.2rem;
+}
+body main .tasklist .taskname .optionbtn {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+body main .tasklist .taskname .optionbtn .taskcheck {
+  transform: scale(1.5);
+}
+body main .tasklist .taskname .optionbtn .deletebtn {
+  font-size: 1.2rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+body main .tasklist .taskname .optionbtn i {
+  pointer-events: none;
+}
+body main .tasklist .taskname .optionbtn .deletebtn:active {
+  scale: 0.95;
+}/*# sourceMappingURL=todo.css.map */
