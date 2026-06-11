@@ -37,6 +37,16 @@ body main header h1 {
   background-clip: text;
   -webkit-background-clip: text;
 }
+body main .taskstatus {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(239, 238, 238);
+  align-items: center;
+  gap: 20px;
+}
+body main .taskstatus h3 {
+  font-size: 1rem;
+}
 body main .input {
   display: flex;
   align-items: center;
@@ -70,7 +80,6 @@ body main .tasklist {
   background-color: white;
   border-radius: 10px;
   padding: 20px 40px;
-  display: flex;
   flex-direction: column;
   gap: 10px;
 }
@@ -81,6 +90,7 @@ body main .tasklist .taskname {
 }
 body main .tasklist .taskname li {
   font-size: 1.2rem;
+  text-transform: capitalize;
 }
 body main .tasklist .taskname .optionbtn {
   display: flex;

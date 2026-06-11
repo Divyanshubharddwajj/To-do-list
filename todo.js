@@ -3,47 +3,82 @@ let addbtn = document.querySelector('#addbtn');
 let taskdata = "";
 let taskArray = [];
 
-taskinput.addEventListener('change', function (dets) {
+
+
+taskinput.addEventListener('input', function (dets) {
+
     taskdata = dets.target.value;
+    // console.log(taskdata);
 
 });
 
 function addtask() {
 
-    document.querySelector('.tasklist').style.display = "flex";
-
     let clutter = "";
     taskArray.forEach(function (elem, idx) {
-        clutter += `<div class="taskname" id="${idx}">
+        clutter += `<div class="taskname" data-id="${idx}">
                 <ul>
-                    <li id="${idx}">${elem}</li>
+                    <li data-id="${idx}">${elem.tkname}</li>
                 </ul>
                 <div class="optionbtn">
-                    <input type="checkbox" class="taskcheck" id="${idx}">
-                    <button class="deletebtn" id="${idx}"><i class="ri-delete-bin-6-fill"></i></button>
+                    <input type="checkbox" class="taskcheck" data-id="${idx}">
+                    <button class="deletebtn" data-id="${idx}"><i class="ri-delete-bin-6-fill"></i></button>
                 </div>
 
             </div>`
     })
 
     document.querySelector('.tasklist').innerHTML = clutter;
+
+
+
 }
 
 function addbtnfn() {
 
     addbtn.addEventListener('click', function (e) {
-        taskArray.push(taskdata);
 
-        addtask();
+        if (taskdata !== "") {
+
+            let duplicatetask = taskArray.some((task) => {
+                return taskdata === task.tkname;
+            })
+
+            if (!duplicatetask) {
+                taskArray.push({
+                    tkname: taskdata,
+                    ischecked: false,
+                });
+            }
+            taskinput.value = "";
+            taskdata = "";
+
+
+            addtask();
+            taskstatus();
+            document.querySelector('.tasklist').style.setProperty('display', 'flex', 'important');
+            document.querySelector('.taskstatus').style.setProperty('display', 'flex', 'important');
+        }
+
+
 
     });
+}
+
+function addtaskEbtn() {
+
+    document.body.addEventListener('keydown', function (keypress) {
+
+        if (keypress.key === "Enter" && taskdata !== "") {
+            addbtn.click();
+
+        }
+    })
 }
 
 function checkbox() {
 
     let tasklist = document.querySelector('.tasklist');
-
-    let check = false;
 
     tasklist.addEventListener('click', function (dets) {
 
@@ -51,54 +86,52 @@ function checkbox() {
 
             document.querySelectorAll('li').forEach(function (li, idx) {
 
-                if (li.id === dets.target.id) {
+                if (li.dataset.id === dets.target.dataset.id) {
 
-                    if (check === true) {
-                        li.style.textDecoration = "capitalize";
-                        check = false;
+                    if (taskArray[dets.target.dataset.id].ischecked === true) {
+                        li.style.textDecoration = "none";
+                        taskArray[dets.target.dataset.id].ischecked = false;
+
                     }
                     else {
                         li.style.textDecoration = "line-through";
-                        check = true;
+                        taskArray[dets.target.dataset.id].ischecked = true;
+
                     }
 
                 }
 
+                taskstatus();
+
             });
 
 
-
-
-        }
-
-        else if (dets.target.className === "deletebtn") {
+        } else if (dets.target.className === "deletebtn") {
 
             let alltaskname = document.querySelectorAll('.taskname');
 
             alltaskname.forEach(function (taskname, idx) {
 
-                if (taskname.id === dets.target.id) {
+                if (taskname.dataset.id === dets.target.dataset.id) {
 
-                    taskArray = taskArray.filter(function (val, idx) {
+                    if (taskArray[dets.target.dataset.id].ischecked === true) {
 
-                        if (idx !== Number(taskname.id)) {
-                            return true;
-
-                        }
-
-
-                    });
-                    console.log(taskArray);
+                        taskArray.splice(dets.target.dataset.id, 1);
+                        console.log(taskArray);
+                    }
+                    else {
+                        taskArray.splice(dets.target.dataset.id, 1);
+                        console.log(taskArray);
+                    }
 
                 }
 
             });
 
             addtask();
-
+            taskstatus();
 
         }
-
 
 
 
@@ -106,10 +139,49 @@ function checkbox() {
 }
 
 
+function taskstatusfn() {
+
+    let complete = 0;
+    let pending = 0;
+    let totaltask = 0;
+
+    taskArray.forEach(function (task) {
+
+        if (task.ischecked) {
+            complete++;
+        }
+
+    });
+
+    totaltask = taskArray.length;
+    pending = taskArray.length - complete;
+
+    return [totaltask, complete, pending];
+
+
+}
+
+
+function taskstatus() {
+
+    let v1 = taskstatusfn();
+
+    document.querySelector('.taskstatus').innerHTML = `<h3 id="totaltask">Total tasks : <span>${v1[0]}</span></h3>
+            <h3 id="completestatus">Completed : <span>${v1[1]}</span></h3>
+            <h3 id="pendingstatus">Pending : <span>${v1[2]}</span></h3>`
+
+}
+
+
+
+
+
 addtask();
 addbtnfn();
 checkbox();
-
+addtaskEbtn();
+taskstatusfn();
+taskstatus();
 
 
 
