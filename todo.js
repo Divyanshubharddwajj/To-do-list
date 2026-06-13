@@ -1,16 +1,18 @@
 let taskinput = document.querySelector('#taskinput');
 let addbtn = document.querySelector('#addbtn');
-let taskdata = "";
 let taskArray = [];
 
 
 
 taskinput.addEventListener('input', function (dets) {
 
-    taskdata = dets.target.value;
-    // console.log(taskdata);
-
 });
+
+function savetasks() {
+
+    localStorage.setItem('tasks', JSON.stringify(taskArray));
+
+}
 
 function addtask() {
 
@@ -18,46 +20,76 @@ function addtask() {
     taskArray.forEach(function (elem, idx) {
         clutter += `<div class="taskname" data-id="${idx}">
                 <ul>
-                    <li data-id="${idx}">${elem.tkname}</li>
+                    <li data-id="${idx}" class="${elem.ischecked ? 'line-through' : ''}">${elem.tkname}</li>
                 </ul>
                 <div class="optionbtn">
-                    <input type="checkbox" class="taskcheck" data-id="${idx}">
+                    <input type="checkbox" class="taskcheck" data-id="${idx}" ${elem.ischecked ? 'checked' : ''}>
                     <button class="deletebtn" data-id="${idx}"><i class="ri-delete-bin-6-fill"></i></button>
                 </div>
 
             </div>`
-    })
+    });
+
+    if (taskArray.length === 0) {
+        document.querySelector('.tasklist').hidden = true;
+        document.querySelector('.taskstatus').hidden = true;
+        document.querySelector('.tasklist').style.setProperty('display', 'none', 'important');
+        document.querySelector('.taskstatus').style.setProperty('display', 'none', 'important');
+
+
+    }
+    else {
+        document.querySelector('.tasklist').hidden = false;
+        document.querySelector('.taskstatus').hidden = false;
+        document.querySelector('.tasklist').style.setProperty('display', 'flex', 'important');
+        document.querySelector('.taskstatus').style.setProperty('display', 'flex', 'important');
+
+    }
 
     document.querySelector('.tasklist').innerHTML = clutter;
 
+}
 
+function loadtasks() {
+
+    let savedtasks = localStorage.getItem('tasks');
+
+    if (savedtasks !== null) {
+
+        taskArray = JSON.parse(savedtasks);
+        console.log(taskArray);
+        addtask();
+        taskstatus();
+
+
+    }
 
 }
+
 
 function addbtnfn() {
 
     addbtn.addEventListener('click', function (e) {
 
-        if (taskdata !== "") {
+        const newtask = taskinput.value.trim();
+
+        if (newtask !== "") {
 
             let duplicatetask = taskArray.some((task) => {
-                return taskdata === task.tkname;
+                return newtask === task.tkname;
             })
 
             if (!duplicatetask) {
                 taskArray.push({
-                    tkname: taskdata,
+                    tkname: newtask,
                     ischecked: false,
                 });
+                savetasks();
             }
             taskinput.value = "";
-            taskdata = "";
-
 
             addtask();
             taskstatus();
-            document.querySelector('.tasklist').style.setProperty('display', 'flex', 'important');
-            document.querySelector('.taskstatus').style.setProperty('display', 'flex', 'important');
         }
 
 
@@ -69,7 +101,7 @@ function addtaskEbtn() {
 
     document.body.addEventListener('keydown', function (keypress) {
 
-        if (keypress.key === "Enter" && taskdata !== "") {
+        if (keypress.key === "Enter" && taskinput.value.trim() !== "") {
             addbtn.click();
 
         }
@@ -101,9 +133,11 @@ function checkbox() {
 
                 }
 
-                taskstatus();
-
             });
+
+            addtask();
+            savetasks();
+            taskstatus();
 
 
         } else if (dets.target.className === "deletebtn") {
@@ -117,11 +151,11 @@ function checkbox() {
                     if (taskArray[dets.target.dataset.id].ischecked === true) {
 
                         taskArray.splice(dets.target.dataset.id, 1);
-                        console.log(taskArray);
+                        // console.log(taskArray);
                     }
                     else {
                         taskArray.splice(dets.target.dataset.id, 1);
-                        console.log(taskArray);
+                        // console.log(taskArray);
                     }
 
                 }
@@ -129,6 +163,7 @@ function checkbox() {
             });
 
             addtask();
+            savetasks();
             taskstatus();
 
         }
@@ -176,12 +211,16 @@ function taskstatus() {
 
 
 
+
+
 addtask();
 addbtnfn();
 checkbox();
 addtaskEbtn();
 taskstatusfn();
 taskstatus();
+loadtasks();
+
 
 
 

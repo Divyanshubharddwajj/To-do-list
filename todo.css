@@ -91,6 +91,11 @@ body main .tasklist .taskname {
 body main .tasklist .taskname li {
   font-size: 1.2rem;
   text-transform: capitalize;
+  text-decoration: none;
+}
+body main .tasklist .taskname .line-through {
+  text-decoration: line-through;
+  font-size: 1.2rem;
 }
 body main .tasklist .taskname .optionbtn {
   display: flex;

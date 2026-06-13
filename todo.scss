@@ -119,8 +119,14 @@ body {
                 li{
                     font-size: 1.2rem;
                     text-transform: capitalize;
+                    text-decoration: none;
                     
                 }
+                .line-through{
+                        text-decoration: line-through;
+                        font-size: 1.2rem;
+                    }
+
 
                 .optionbtn{
                     display: flex;
@@ -130,7 +136,7 @@ body {
                     .taskcheck{
                         transform: scale(1.5);
                     }
-
+                    
 
                     .deletebtn{
                         font-size: 1.2rem;
